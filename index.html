@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planificateur de Grille d'Arroseurs</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Planificateur de Grille d'Arroseurs</h1>
+
+    <!-- Section pour choisir la taille de la grille -->
+    <div>
+        <label for="grid-rows">Nombre de lignes :</label>
+        <input type="number" id="grid-rows" value="5" min="1">
+        
+        <label for="grid-cols">Nombre de colonnes :</label>
+        <input type="number" id="grid-cols" value="5" min="1">
+        
+        <button onclick="generateGrid()">Générer Grille</button>
+    </div>
+
+    <!-- Sélection des arroseurs -->
+    <div>
+        <h3>Choisir un arroseur :</h3>
+        <button onclick="selectSprinkler('basic')">Arroseur Simple</button>
+        <button onclick="selectSprinkler('quality')">Arroseur de Qualité</button>
+        <button onclick="selectSprinkler('iridium')">Arroseur Iridium</button>
+    </div>
+
+    <!-- Conteneur pour la grille -->
+    <div id="grid-container" class="grid"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
