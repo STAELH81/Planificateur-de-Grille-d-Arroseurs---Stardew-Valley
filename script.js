@@ -2,6 +2,7 @@ let selectedSprinkler = null;
 let deleteMode = false;  // Mode de suppression activé ou non
 let gridRows = 5;
 let gridCols = 5;
+let selectedLang = 'fr'; // Par défaut, langue française
 
 const sprinklerRanges = {
     'basic': [{x: 0, y: -1}, {x: 0, y: 1}, {x: -1, y: 0}, {x: 1, y: 0}], // Portée de l'arroseur simple
@@ -18,6 +19,21 @@ const sprinklerRanges = {
         {x: -2, y: 2},  {x: -1, y: 2},  {x: 0, y: 2},  {x: 1, y: 2},  {x: 2, y: 2}
     ]
 };
+
+// Définir la variable pour la grille
+const grid = document.getElementById('grid-container');
+
+// Assurez-vous que l'élément existe
+if (!grid) {
+    console.error("Le conteneur de la grille (grid-container) n'a pas été trouvé.");
+}
+
+// Écoutez l'événement de clic sur la grille
+grid.addEventListener('click', function(event) {
+    const selectedType = getSelectedType(); // Récupère le type d'arroseur ou autre
+    placeSprinkler(event, selectedType);
+});
+
 
 // Générer la grille
 function generateGrid() {
@@ -41,6 +57,11 @@ function generateGrid() {
 function selectSprinkler(type) {
     selectedSprinkler = type;
     deleteMode = false;  // Désactive le mode suppression si un arroseur est sélectionné
+    console.log("Arroseur sélectionné :", type);
+    console.log("Langue actuelle :", selectedLang);
+
+    // ... code pour sélectionner l'arroseur ...
+    updateMaterialCost();
 }
 
 // Activer le mode suppression
@@ -115,6 +136,15 @@ function updateMaterialCosts() {
     const iridiumBars = iridiumCount * 1;       // 1 Lingot d'iridium par arroseur iridium
     const batteries = iridiumCount * 1;         // 1 Pile par arroseur iridium
 
+    function updateMaterialCost() {
+        const materialsList = document.getElementById('materials-list');
+    
+        materialsList.children[0].textContent = `${translations[selectedLang].basicCost} ${basicCount} ${translations[selectedLang].copperBar}, ${basicCount} ${translations[selectedLang].ironBar}`;
+        materialsList.children[1].textContent = `${translations[selectedLang].qualityCost} ${qualityCount} ${translations[selectedLang].ironBar}, ${qualityCount} ${translations[selectedLang].goldBar}, ${qualityCount} ${translations[selectedLang].quartz}`;
+        materialsList.children[2].textContent = `${translations[selectedLang].iridiumCost} ${iridiumCount} ${translations[selectedLang].goldBar}, ${iridiumCount} ${translations[selectedLang].iridiumBar}, ${iridiumCount} ${translations[selectedLang].battery}`;
+    }
+    
+
     document.getElementById('materials-list').innerHTML = `
         <li>Arroseur Basique : ${basicCopperBars} lingots de cuivre, ${basicIronBars} lingots de fer</li>
         <li>Arroseur de Qualité : ${qualityIronBars} lingots de fer, ${qualityGoldBars} lingots d'or, ${qualityQuartz} quartz raffiné</li>
@@ -184,4 +214,137 @@ function resetIrrigatedCells(row, col, type) {
             }
         }
     });
+}
+
+const translations = {
+    fr: {
+        title: "Gestion des Arroseurs",
+        basic: "Arroseur Basique",
+        quality: "Arroseur de Qualité",
+        iridium: "Arroseur Iridium",
+        delete: "Mode Suppression",
+        materials: "Coût des Matériaux",
+        basicCost: "Arroseur Basique :",
+        qualityCost: "Arroseur de Qualité :",
+        iridiumCost: "Arroseur Iridium :",
+        rows: "Lignes",
+        cols: "Colonnes",
+        generateGrid: "Générer la Grille",
+        copperBar: "lingots de cuivre",
+        ironBar: "lingots de fer",
+        goldBar: "lingots d'or",
+        iridiumBar: "lingots d'iridium",
+        quartz: "quartz raffiné",
+        battery: "pile"
+    },
+    en: {
+        title: "Sprinkler Management",
+        basic: "Basic Sprinkler",
+        quality: "Quality Sprinkler",
+        iridium: "Iridium Sprinkler",
+        delete: "Delete Mode",
+        materials: "Material Cost",
+        basicCost: "Basic Sprinkler:",
+        qualityCost: "Quality Sprinkler:",
+        iridiumCost: "Iridium Sprinkler:",
+        rows: "Rows",
+        cols: "Columns",
+        generateGrid: "Generate Grid",
+        copperBar: "copper bars",
+        ironBar: "iron bars",
+        goldBar: "gold bars",
+        iridiumBar: "iridium bars",
+        quartz: "refined quartz",
+        battery: "battery"
+    }
+};
+
+
+function changeLanguage() {
+    const selectedLang = document.getElementById('language-select').value;
+
+    // Mettre à jour les textes avec la langue choisie
+    document.querySelector('h1').textContent = translations[selectedLang].title;
+    document.querySelector('button[onclick="selectSprinkler(\'basic\')"]').textContent = translations[selectedLang].basic;
+    document.querySelector('button[onclick="selectSprinkler(\'quality\')"]').textContent = translations[selectedLang].quality;
+    document.querySelector('button[onclick="selectSprinkler(\'iridium\')"]').textContent = translations[selectedLang].iridium;
+    document.querySelector('button[onclick="deleteSprinklerMode()"]').textContent = translations[selectedLang].delete;
+    document.querySelector('.materials-cost h3').textContent = translations[selectedLang].materials;
+
+    // Mettre à jour les labels et le bouton de génération de la grille
+    document.getElementById('label-rows').textContent = translations[selectedLang].rows + ":";
+    document.getElementById('label-cols').textContent = translations[selectedLang].cols + ":";
+    document.getElementById('generate-grid-button').textContent = translations[selectedLang].generateGrid;
+
+    // Mettre à jour la section des matériaux
+    const materialsList = document.getElementById('materials-list');
+    materialsList.children[0].textContent = translations[selectedLang].basicCost + ' ' + basicCount + ' ' + translations[selectedLang].copperBar + ', ' + basicCount + ' ' + translations[selectedLang].ironBar;
+    materialsList.children[1].textContent = translations[selectedLang].qualityCost + ' ' + qualityCount + ' ' + translations[selectedLang].ironBar + ', ' + qualityCount + ' ' + translations[selectedLang].goldBar + ', ' + qualityCount + ' ' + translations[selectedLang].quartz;
+    materialsList.children[2].textContent = translations[selectedLang].iridiumCost + ' ' + iridiumCount + ' ' + translations[selectedLang].goldBar + ', ' + iridiumCount + ' ' + translations[selectedLang].iridiumBar + ', ' + iridiumCount + ' ' + translations[selectedLang].battery;
+}
+
+window.onload = function() {
+    changeLanguage(); // Par défaut en Français
+};
+
+console.log("Langue sélectionnée :", selectedLang);
+console.log("Titre mis à jour :", translations[selectedLang].title);
+
+function updateMaterialCost() {
+    const materialsList = document.getElementById('materials-list');
+    
+    materialsList.children[0].textContent = `${translations[selectedLang].basicCost}: ${basicCount} ${translations[selectedLang].copperBar}, ${basicCount} ${translations[selectedLang].ironBar}`;
+    materialsList.children[1].textContent = `${translations[selectedLang].qualityCost}: ${qualityCount} ${translations[selectedLang].ironBar}, ${qualityCount} ${translations[selectedLang].goldBar}, ${qualityCount} ${translations[selectedLang].quartz}`;
+    materialsList.children[2].textContent = `${translations[selectedLang].iridiumCost}: ${iridiumCount} ${translations[selectedLang].goldBar}, ${iridiumCount} ${translations[selectedLang].iridiumBar}, ${iridiumCount} ${translations[selectedLang].battery}`;
+}
+
+grid.addEventListener('click', function(event) {
+    const selectedType = getSelectedType(); // Récupère le type d'arroseur ou autre
+    placeSprinkler(event, selectedType);
+});
+
+function placeSprinkler(event, type) {
+    // Logique pour placer l'arroseur...
+    
+    updateMaterialCost(); // Appelle juste pour mettre à jour les coûts
+}
+
+function updateMaterialCost() {
+    console.log("Langue actuelle dans updateMaterialCost :", selectedLang);
+    
+    const materialsList = document.getElementById('materials-list');
+
+    materialsList.children[0].textContent = `${translations[selectedLang].basicCost}: ${basicCount} ${translations[selectedLang].copperBar}, ${basicCount} ${translations[selectedLang].ironBar}`;
+    materialsList.children[1].textContent = `${translations[selectedLang].qualityCost}: ${qualityCount} ${translations[selectedLang].ironBar}, ${qualityCount} ${translations[selectedLang].goldBar}, ${qualityCount} ${translations[selectedLang].quartz}`;
+    materialsList.children[2].textContent = `${translations[selectedLang].iridiumCost}: ${iridiumCount} ${translations[selectedLang].goldBar}, ${iridiumCount} ${translations[selectedLang].iridiumBar}, ${iridiumCount} ${translations[selectedLang].battery}`;
+}
+
+grid.addEventListener('click', function(event) {
+    console.log("Clic détecté sur la grille");
+    console.log("Langue actuelle avant le placement :", selectedLang);
+    
+    const selectedType = getSelectedType(); // Récupère le type d'arroseur ou autre
+    placeSprinkler(event, selectedType);
+    
+    console.log("Langue actuelle après le placement :", selectedLang);
+});
+
+// Ajouter un événement pour le bouton de changement de thème
+document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+// Attendre que le DOM soit entièrement chargé
+document.addEventListener('DOMContentLoaded', function() {
+    const themeToggleButton = document.getElementById('themeToggle');
+    
+    // Vérifier si le bouton existe
+    if (themeToggleButton) {
+        themeToggleButton.addEventListener('click', toggleTheme);
+    } else {
+        console.error("Le bouton de changement de thème (themeToggle) n'a pas été trouvé.");
+    }
+});
+
+// Fonction pour basculer entre le mode clair et sombre
+function toggleTheme() {
+    document.body.classList.toggle('dark-theme'); // Ajoute/enlève la classe 'dark-theme'
 }

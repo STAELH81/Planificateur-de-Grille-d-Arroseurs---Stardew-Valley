@@ -5,11 +5,12 @@ body {
     align-items: center;
     margin: 0;
     padding: 20px;
-    background-image: url('main-background.png'); /* Ajout du fond d'écran */
-    background-size: cover; /* Pour que l'image couvre tout l'arrière-plan */
-    background-position: center; /* Pour centrer l'image */
-    background-repeat: no-repeat; /* Évite la répétition de l'image */
+    background-image: url('main-background.png'); /* Fond par défaut */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     min-height: 100vh;
+    color: #2c3e50; /* Couleur du texte en mode clair */
 }
 
 img {
@@ -30,6 +31,7 @@ h1 {
     color: #2c3e50;
 }
 
+/* Styles des boutons */
 button {
     padding: 10px 20px;
     font-size: 16px;
@@ -66,6 +68,15 @@ button:hover {
     gap: 2px;
     margin-top: 20px;
 }
+
+.grid-item {
+    transition: transform 0.3s ease;
+}
+
+.grid-item:hover {
+    transform: scale(1.05); /* Zoom léger au survol */
+}
+
 
 #grid-container {
     display: grid;
@@ -189,4 +200,46 @@ button:hover {
 
 .materials-cost li {
     margin-bottom: 5px;
+}
+
+.materials-liste {
+    font-weight: bold;
+}
+
+.language-select {
+    position: absolute;
+    top: 20px;  /* Distance par rapport au haut de la page */
+    right: 20px;  /* Distance par rapport au bord droit */
+    padding: 5px;  /* Un peu de padding pour rendre le bouton agréable */
+    font-size: 16px;  /* Agrandir le texte pour plus de lisibilité */
+    border-radius: 5px;  /* Arrondir les coins pour un style moderne */
+    border: 1px solid #ccc;  /* Bordure légère */
+    background-color: #fff;  /* Fond blanc */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);  /* Ajout d'une ombre subtile */
+    cursor: pointer;  /* Indiquer que c'est un élément cliquable */
+}
+
+.language-select:focus {
+    outline: none;  /* Supprimer le contour bleu par défaut */
+}
+/*A FAIRE*/
+#themeToggleContainer {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 100;
+}
+
+body.dark-theme {
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 20px;
+    background-image: url('main-background-night.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
 }
