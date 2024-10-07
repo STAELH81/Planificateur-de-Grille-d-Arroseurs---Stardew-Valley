@@ -1,53 +1,128 @@
-/* Styles de base */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 0;
     padding: 20px;
+    background-color: #f0f4f8;
 }
 
 h1 {
     margin-bottom: 20px;
+    color: #2c3e50;
 }
 
-h3 {
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    background-color: #3498db;
+    color: white;
+    border-radius: 5px;
+    margin: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+.grid-settings {
     margin-top: 20px;
 }
 
-/* Grille dynamique */
+.grid-settings label {
+    margin-right: 10px;
+}
+
+.grid-settings input {
+    width: 50px;
+    padding: 5px;
+    margin-right: 10px;
+    font-size: 16px;
+}
+
 .grid {
     display: grid;
-    gap: 2px; /* Espace entre les cellules */
+    gap: 2px;
     margin-top: 20px;
+}
+
+#grid-container {
+    display: grid;
+    grid-gap: 1px;
+    background-color: lightgray;
 }
 
 .grid-cell {
     width: 50px;
     height: 50px;
-    border: 1px solid #ccc;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
+    background-image: url('dirt.png'); /* Image par défaut de la terre */
+    background-size: cover;
+    border: 1px solid #555;
 }
 
-/* Styles pour les arroseurs */
+.grid-cell.irrigated {
+    background-image: url('irrigated-dirt.png'); /* Image pour les cellules irriguées */
+    background-size: cover;
+}
+
 .sprinkler-basic {
-    background-color: #add8e6; /* Bleu clair */
+    background-image: url('basic-sprinkler.png'); /* Image pour l'arroseur basique */
+    background-size: cover;
+    background-position: center;
 }
 
 .sprinkler-quality {
-    background-color: #90ee90; /* Vert clair */
+    background-image: url('quality-sprinkler.png'); /* Image pour l'arroseur de qualité */
+    background-size: cover;
+    background-position: center;
 }
 
 .sprinkler-iridium {
-    background-color: #dda0dd; /* Violet clair */
+    background-image: url('iridium-sprinkler.png'); /* Image pour l'arroseur iridium */
+    background-size: cover;
+    background-position: center;
 }
 
-/* Surbrillance pour la portée d'arrosage */
+/* Classe pour surligner les cellules irriguées sans toucher l'image de l'arroseur */
 .highlight-range {
-    background-color: rgba(0, 255, 0, 0.2); /* Vert semi-transparent */
+    outline: 2px solid rgba(0, 128, 0, 0.5); /* Par exemple un contour pour différencier les portées */
+}
+
+
+.placing {
+    animation: place 0.3s ease;
+}
+
+.removing {
+    animation: remove 0.3s ease;
+}
+
+.generer{
+    background-color: aqua;
+}
+
+@keyframes place {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes remove {
+    from {
+        transform: scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: scale(0);
+        opacity: 0;
+    }
 }
