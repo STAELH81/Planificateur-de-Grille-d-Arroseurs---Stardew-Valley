@@ -151,3 +151,42 @@ button:hover {
         opacity: 0;
     }
 }
+
+.content-container {
+    background-color: rgba(255, 255, 255, 0.8); /* Fond blanc avec 80% d'opacité */
+    border-radius: 10px; /* Arrondir les coins du conteneur */
+    padding: 20px; /* Espacement interne */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Ombre pour donner du relief */
+    max-width: 800px; /* Limiter la largeur du conteneur */
+    width: 90%; /* Largeur responsive */
+    margin: 20px auto; /* Centrer le conteneur avec une marge */
+    display: flex; /* Utiliser flexbox pour l'alignement interne */
+    flex-direction: column; /* Les enfants s'empilent verticalement */
+    align-items: center; /* Centrer les enfants horizontalement */
+}
+
+.content-container h1,
+.content-container img {
+    margin: 0; /* Supprimer la marge par défaut */
+    padding: 0; /* Supprimer le padding par défaut */
+    text-align: center; /* Centrer le texte si nécessaire */
+}
+
+.materials-cost {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    width: 300px;
+    text-align: left;
+}
+
+.materials-cost ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.materials-cost li {
+    margin-bottom: 5px;
+}

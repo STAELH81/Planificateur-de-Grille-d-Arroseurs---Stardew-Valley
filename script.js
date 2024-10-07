@@ -98,3 +98,90 @@ function clearHighlightRange() {
         cell.classList.remove('highlight-range');
     });
 }
+
+let basicCount = 0;
+let qualityCount = 0;
+let iridiumCount = 0;
+
+function updateMaterialCosts() {
+    const basicCopperBars = basicCount * 1;  // 1 Lingot de cuivre par arroseur basique
+    const basicIronBars = basicCount * 1;    // 1 Lingot de fer par arroseur basique
+    
+    const qualityIronBars = qualityCount * 1;   // 1 Lingot de fer par arroseur de qualité
+    const qualityGoldBars = qualityCount * 1;   // 1 Lingot d'or par arroseur de qualité
+    const qualityQuartz = qualityCount * 1;     // 1 Quartz raffiné par arroseur de qualité
+    
+    const iridiumGoldBars = iridiumCount * 1;   // 1 Lingot d'or par arroseur iridium
+    const iridiumBars = iridiumCount * 1;       // 1 Lingot d'iridium par arroseur iridium
+    const batteries = iridiumCount * 1;         // 1 Pile par arroseur iridium
+
+    document.getElementById('materials-list').innerHTML = `
+        <li>Arroseur Basique : ${basicCopperBars} lingots de cuivre, ${basicIronBars} lingots de fer</li>
+        <li>Arroseur de Qualité : ${qualityIronBars} lingots de fer, ${qualityGoldBars} lingots d'or, ${qualityQuartz} quartz raffiné</li>
+        <li>Arroseur Iridium : ${iridiumGoldBars} lingots d'or, ${iridiumBars} lingots d'iridium, ${batteries} piles</li>
+    `;
+}
+
+function handleCellClick(cell) {
+    const index = parseInt(cell.dataset.index);
+    const row = Math.floor(index / gridCols);
+    const col = index % gridCols;
+
+    if (deleteMode) {
+        // Supprimer un arroseur et réinitialiser les cases autour
+        if (cell.classList.contains('sprinkler-basic')) {
+            basicCount--;
+            resetIrrigatedCells(row, col, 'basic'); // Réinitialiser les cases irrigées
+        } else if (cell.classList.contains('sprinkler-quality')) {
+            qualityCount--;
+            resetIrrigatedCells(row, col, 'quality');
+        } else if (cell.classList.contains('sprinkler-iridium')) {
+            iridiumCount--;
+            resetIrrigatedCells(row, col, 'iridium');
+        }
+
+        cell.classList.remove('sprinkler-basic', 'sprinkler-quality', 'sprinkler-iridium');
+        cell.style.backgroundImage = "url('dirt.png')"; // Revenir à l'état de sol non irrigué
+        clearHighlightRange(); // Supprimer la surbrillance
+        updateMaterialCosts(); // Mettre à jour les coûts après suppression
+    } else if (selectedSprinkler) {
+        // Ajouter l'arroseur sélectionné à la cellule cible
+        cell.classList.add(`sprinkler-${selectedSprinkler}`);
+        cell.style.backgroundImage = `url('${selectedSprinkler}-sprinkler.png')`;
+
+        // Marquer les autres cellules dans la portée comme irriguées
+        highlightRange(row, col, selectedSprinkler);
+
+        // Mettre à jour le nombre d'arroseurs placés
+        if (selectedSprinkler === 'basic') {
+            basicCount++;
+        } else if (selectedSprinkler === 'quality') {
+            qualityCount++;
+        } else if (selectedSprinkler === 'iridium') {
+            iridiumCount++;
+        }
+
+        // Mettre à jour le coût des matériaux
+        updateMaterialCosts();
+    } else {
+        alert("Veuillez sélectionner un arroseur avant de placer un élément.");
+    }
+}
+
+function resetIrrigatedCells(row, col, type) {
+    const range = sprinklerRanges[type];
+    
+    range.forEach(offset => {
+        const targetRow = row + offset.y;
+        const targetCol = col + offset.x;
+        if (targetRow >= 0 && targetRow < gridRows && targetCol >= 0 && targetCol < gridCols) {
+            const targetIndex = targetRow * gridCols + targetCol;
+            const targetCell = document.querySelector(`.grid-cell[data-index="${targetIndex}"]`);
+            if (targetCell) {
+                // Réinitialiser la cellule comme non irriguée (terre sèche)
+                targetCell.classList.remove('irrigated');
+                targetCell.style.backgroundImage = "url('dirt.png')";
+            }
+        }
+    });
+}
