@@ -5,7 +5,24 @@ body {
     align-items: center;
     margin: 0;
     padding: 20px;
-    background-color: #f0f4f8;
+    background-image: url('main-background.png'); /* Ajout du fond d'écran */
+    background-size: cover; /* Pour que l'image couvre tout l'arrière-plan */
+    background-position: center; /* Pour centrer l'image */
+    background-repeat: no-repeat; /* Évite la répétition de l'image */
+    min-height: 100vh;
+}
+
+img {
+    display: block;
+    margin: 0 auto 20px; /* Centrer et ajouter une marge en bas */
+    max-width: 80%; /* Limiter la largeur du logo */
+    height: auto; /* Garder le ratio de l'image */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Inclure les bordures et le padding dans la largeur/hauteur totale */
 }
 
 h1 {
@@ -101,8 +118,16 @@ button:hover {
     animation: remove 0.3s ease;
 }
 
-.generer{
-    background-color: aqua;
+.generer {
+    background-color: #0b99f8;
+}
+
+.removebutton {
+    background-color: rgb(196, 27, 27);
+}
+
+.removebutton:hover {
+    background-color: rgb(105, 2, 2);
 }
 
 @keyframes place {

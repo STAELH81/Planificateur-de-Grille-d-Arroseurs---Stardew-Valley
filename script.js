@@ -60,25 +60,23 @@ function handleCellClick(cell) {
         cell.style.backgroundImage = "url('dirt.png')"; // Revenir à l'état de sol non irrigué
         clearHighlightRange();  // Enlever la surbrillance des autres cellules
     } else if (selectedSprinkler) {
-        // Ajouter l'arroseur sélectionné à la cellule cible
+        // Appliquer l'image de l'arroseur seulement à la cellule cliquée
         cell.classList.add(`sprinkler-${selectedSprinkler}`);
         cell.style.backgroundImage = `url('${selectedSprinkler}-sprinkler.png')`;
 
-        // Marquer les autres cellules dans la portée comme irriguées
+        // Marquer les autres cellules dans la portée sans changer l'image d'arroseur
         highlightRange(row, col, selectedSprinkler);
 
-        // Marquer la cellule d'arroseur comme irriguée
-        cell.classList.add('irrigated'); // Marquer la cellule comme irriguée
     } else {
         alert("Veuillez sélectionner un arroseur avant de placer un élément.");
     }
 }
 
-
+// Afficher la portée d'un arroseur
 function highlightRange(row, col, type) {
     clearHighlightRange();  // Enlever toute surbrillance précédente
     const range = sprinklerRanges[type];
-
+    
     range.forEach(offset => {
         const targetRow = row + offset.y;
         const targetCol = col + offset.x;
@@ -86,9 +84,8 @@ function highlightRange(row, col, type) {
             const targetIndex = targetRow * gridCols + targetCol;
             const targetCell = document.querySelector(`.grid-cell[data-index="${targetIndex}"]`);
             if (targetCell) {
-                // Mettre à jour l'image de la cellule pour qu'elle soit irriguée
-                targetCell.classList.add('irrigated'); // Marquer comme irriguée
-                targetCell.style.backgroundImage = "url('irrigated-dirt.png')"; // Changer l'image de fond
+                // Appliquer l'état "irrigated" à chaque cellule dans la portée
+                targetCell.classList.add('irrigated');
             }
         }
     });
